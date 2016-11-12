@@ -30,6 +30,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener {
 
     private GoogleMap mMap;
+
+    //untuk rumah makan
+    private GoogleMap wdMap;
+    private GoogleMap PadangOmuda;
+
+    //untuk posisi sekarang
     private Marker mPosSekarang;
 
     GoogleApiClient mGoogleApiClient ;
@@ -114,6 +120,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //untuk tempat makan
+        wdMap = googleMap;
+        PadangOmuda = googleMap;
+
         /*// Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -128,18 +138,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng gedungIlkom = new LatLng(-6.860418, 107.589889);
         mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK"));
 
+        //marker warung jadoel
+        LatLng Wadoel = new LatLng(-6.8649716,107.5936292);
+        wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe"));
+
+        //marker Padang Omuda
+        LatLng PadangO = new LatLng(-6.8658617,107.5916296);
+        PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda"));
+
 
         // Set kamera sesuai batas UPI
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         int padding = (int) (width * 0.12); // offset dari edges
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(UPI, width, height, padding));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(gedungIlkom, 17));
-
+        //posisi sekarang
         LatLng posSekarang = new LatLng(-6.860418, 107.589889);
         mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("PosSekarang"));
 
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(UPI, width, height, padding));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
     }
 
     @Override
@@ -160,10 +178,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
 
-        AlertDialog ad = new AlertDialog.Builder(this).create();
-        ad.setMessage("update lokasi");
-        ad.show();
+        //AlertDialog ad = new AlertDialog.Builder(this).create();
+        //ad.setMessage("update lokasi");
+        //ad.show();
         mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 17));
 
     }
 
