@@ -35,6 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap wdMap;
     private GoogleMap PadangOmuda;
 
+    private LatLng Wadoel;
+    private LatLng PadangO;
+    private LatLng posSekarang;
+
     //untuk posisi sekarang
     private Marker mPosSekarang;
 
@@ -139,11 +143,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(gedungIlkom).title("Marker di GIK"));
 
         //marker warung jadoel
-        LatLng Wadoel = new LatLng(-6.8649716,107.5936292);
+        Wadoel = new LatLng(-6.8649716,107.5936292);
         wdMap.addMarker(new MarkerOptions().position(Wadoel).title("Warung Jadoel Cafe"));
 
         //marker Padang Omuda
-        LatLng PadangO = new LatLng(-6.8658617,107.5916296);
+        PadangO = new LatLng(-6.8658617,107.5916296);
         PadangOmuda.addMarker(new MarkerOptions().position(PadangO).title("Rumah Makan Padang Omuda"));
 
 
@@ -153,11 +157,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int padding = (int) (width * 0.12); // offset dari edges
 
         //posisi sekarang
-        LatLng posSekarang = new LatLng(-6.860418, 107.589889);
+        posSekarang = new LatLng(-6.8663673, 107.5918008);
         mPosSekarang = mMap.addMarker(new MarkerOptions().position(posSekarang).title("PosSekarang"));
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(UPI, width, height, padding));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posSekarang, 17));
     }
 
     @Override
@@ -182,9 +186,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //ad.setMessage("update lokasi");
         //ad.show();
         mPosSekarang.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 17));
 
+        //untuk menyamakan lokasi
+        if(posSekarang.equals(new LatLng(location.getLatitude(),location.getLongitude()))){
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Anda Berada disini");
+            ad.show();
+        }
+        else if(Wadoel.equals(new LatLng(location.getLatitude(),location.getLongitude()))){
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Anda Berada di Waroeng Jadul");
+            ad.show();
+        }
+        else if(PadangO.equals(new LatLng(location.getLatitude(),location.getLongitude()))){
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setMessage("Anda Berada di Rumah Makan Padang Omuda");
+            ad.show();
+        }
     }
 
     //ketika aplikasi dijalankan
